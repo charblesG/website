@@ -1,17 +1,344 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Search Engine</title>
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #151922;
+      --panel-2: #1b2130;
+      --text: #eef2ff;
+      --muted: #a8b0c7;
+      --accent: #7aa2ff;
+      --border: #2a3142;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(180deg, #0b0d10, #101521);
+      color: var(--text);
+    }
+
+    .container {
+      width: min(960px, calc(100% - 32px));
+      margin: 48px auto;
+    }
+
+    .hero {
+      background: rgba(21, 25, 34, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"] {
+      flex: 1 1 520px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--accent);
+      color: #08101f;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: var(--panel-2);
+      color: var(--text);
+    }
+
+    .meta {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .results {
+      margin-top: 24px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(21, 25, 34, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .url {
+      color: var(--accent);
+      font-size: 14px;
+      word-break: break-word;
+      margin-bottom: 10px;
+    }
+
+    .snippet {
+      color: #d7ddf4;
+      line-height: 1.6;
+    }
+
+    .snippet mark {
+      background: rgba(122, 162, 255, 0.25);
+      color: #ffffff;
+      padding: 0 2px;
+      border-radius: 4px;
+    }
+
+    .footer-box {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(21, 25, 34, 0.7);
+    }
+
+    code {
+      background: #121722;
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #dfe6ff;
+    }
+
+    .hidden { display: none; }
+  </style>
 </head>
-<style>
-body {
-  background-image: url('xp.jpg');
-}
-</style>
 <body>
+  <div class="container">
+    <section class="hero">
+      <h1>Mini Search Engine</h1>
+      <p>
+        A static search engine that runs entirely in your browser, which is exactly the sort of compromise GitHub Pages forces on people.
+        Add your searchable pages to the <code>DOCUMENTS</code> array in this file, push it to GitHub, and it works.
+      </p>
 
-<h1>Welcome To charbles.net <h1>
-<p>This site is curently under construction<p>
-<img src="cat.png" alt="cat">
+      <div class="search-row">
+        <input id="searchInput" type="text" placeholder="Search your site..." autocomplete="off" />
+        <button id="searchBtn">Search</button>
+        <button id="showAllBtn" class="secondary">Show All</button>
+      </div>
 
+      <div id="meta" class="meta">Ready. Type something useful.</div>
+    </section>
+
+    <section id="results" class="results"></section>
+
+    <section class="footer-box">
+      <strong>How to use this on GitHub Pages</strong>
+      <p>
+        1. Save this file as <code>index.html</code>.<br>
+        2. Edit the <code>DOCUMENTS</code> array and add your pages.<br>
+        3. Push it to a GitHub repo.<br>
+        4. In GitHub, enable <code>Settings → Pages</code> and deploy from the main branch.<br>
+        5. Your search site will work at <code>https://yourusername.github.io/reponame/</code>.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    const DOCUMENTS = [
+      {
+        title: "Home",
+        url: "https://example.com/",
+        content: "Welcome to my website. This homepage covers projects, blog posts, and updates.",
+        tags: ["home", "projects", "blog"]
+      },
+      {
+        title: "About Me",
+        url: "https://example.com/about",
+        content: "This page talks about who I am, my background, the tools I use, and what I build.",
+        tags: ["about", "bio", "profile"]
+      },
+      {
+        title: "Game Dev Blog",
+        url: "https://example.com/game-dev-blog",
+        content: "Posts about game development, Unreal Engine, mechanics, level design, and performance tips.",
+        tags: ["games", "unreal", "devlog"]
+      },
+      {
+        title: "Contact",
+        url: "https://example.com/contact",
+        content: "Ways to get in touch, social links, email, and business contact information.",
+        tags: ["contact", "email", "social"]
+      }
+    ];
+
+    const input = document.getElementById("searchInput");
+    const resultsEl = document.getElementById("results");
+    const metaEl = document.getElementById("meta");
+    const searchBtn = document.getElementById("searchBtn");
+    const showAllBtn = document.getElementById("showAllBtn");
+
+    function escapeHtml(str) {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function tokenize(text) {
+      return text
+        .toLowerCase()
+        .split(/[^a-z0-9]+/)
+        .filter(Boolean);
+    }
+
+    function scoreDocument(doc, terms) {
+      const title = doc.title.toLowerCase();
+      const content = doc.content.toLowerCase();
+      const tags = (doc.tags || []).join(" ").toLowerCase();
+      let score = 0;
+
+      for (const term of terms) {
+        if (title.includes(term)) score += 8;
+        if (tags.includes(term)) score += 5;
+
+        const contentMatches = content.split(term).length - 1;
+        score += contentMatches * 2;
+      }
+
+      return score;
+    }
+
+    function highlight(text, terms) {
+      let output = escapeHtml(text);
+      for (const term of terms) {
+        if (!term) continue;
+        const safe = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(`(${safe})`, "gi");
+        output = output.replace(regex, "<mark>$1</mark>");
+      }
+      return output;
+    }
+
+    function makeSnippet(text, terms) {
+      const lower = text.toLowerCase();
+      let index = 0;
+
+      for (const term of terms) {
+        const found = lower.indexOf(term.toLowerCase());
+        if (found !== -1) {
+          index = found;
+          break;
+        }
+      }
+
+      const start = Math.max(0, index - 60);
+      const end = Math.min(text.length, index + 180);
+      let snippet = text.slice(start, end).trim();
+
+      if (start > 0) snippet = "... " + snippet;
+      if (end < text.length) snippet += " ...";
+
+      return highlight(snippet, terms);
+    }
+
+    function renderResults(items, terms = [], query = "") {
+      resultsEl.innerHTML = "";
+
+      if (items.length === 0) {
+        resultsEl.innerHTML = `
+          <div class="card">
+            <h3>No results</h3>
+            <div class="snippet">Nothing matched <mark>${escapeHtml(query)}</mark>. Humanity remains inconsistent.</div>
+          </div>
+        `;
+        return;
+      }
+
+      for (const item of items) {
+        const snippet = makeSnippet(item.content, terms);
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${escapeHtml(item.title)}</h3>
+          <div class="url"><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.url)}</a></div>
+          <div class="snippet">${snippet}</div>
+        `;
+        resultsEl.appendChild(card);
+      }
+    }
+
+    function search() {
+      const query = input.value.trim();
+
+      if (!query) {
+        metaEl.textContent = `Showing all ${DOCUMENTS.length} page(s).`;
+        renderResults(DOCUMENTS);
+        return;
+      }
+
+      const terms = tokenize(query);
+      const ranked = DOCUMENTS
+        .map(doc => ({ ...doc, score: scoreDocument(doc, terms) }))
+        .filter(doc => doc.score > 0)
+        .sort((a, b) => b.score - a.score);
+
+      metaEl.textContent = `${ranked.length} result(s) for "${query}"`;
+      renderResults(ranked, terms, query);
+    }
+
+    searchBtn.addEventListener("click", search);
+    showAllBtn.addEventListener("click", () => {
+      input.value = "";
+      metaEl.textContent = `Showing all ${DOCUMENTS.length} page(s).`;
+      renderResults(DOCUMENTS);
+    });
+
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") search();
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("q");
+    if (q) {
+      input.value = q;
+      search();
+    } else {
+      renderResults(DOCUMENTS);
+      metaEl.textContent = `Showing all ${DOCUMENTS.length} page(s).`;
+    }
+  </script>
 </body>
 </html>
