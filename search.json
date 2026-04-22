@@ -1,5 +1,3 @@
-# Generate a cleaner ~300 real/popular sites list (no "example" placeholders)
-
 import json
 
 sites = []
