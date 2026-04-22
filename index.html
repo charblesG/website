@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -13,145 +14,141 @@
       --muted: #a8b0c7;
       --accent: #7aa2ff;
       --border: #2a3142;
-    }
+    }* { box-sizing: border-box; }
 
-    * { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: linear-gradient(180deg, #0b0d10, #101521);
+  color: var(--text);
+}
 
-    body {
-      margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      background: linear-gradient(180deg, #0b0d10, #101521);
-      color: var(--text);
-    }
+.container {
+  width: min(960px, calc(100% - 32px));
+  margin: 48px auto;
+}
 
-    .container {
-      width: min(960px, calc(100% - 32px));
-      margin: 48px auto;
-    }
+.hero {
+  background: rgba(21, 25, 34, 0.88);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
 
-    .hero {
-      background: rgba(21, 25, 34, 0.88);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    }
+h1 {
+  margin: 0 0 8px;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(2rem, 4vw, 3rem);
-    }
+p {
+  color: var(--muted);
+  line-height: 1.55;
+}
 
-    p {
-      color: var(--muted);
-      line-height: 1.55;
-    }
+.search-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
 
-    .search-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
+input[type="text"] {
+  flex: 1 1 520px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
 
-    input[type="text"] {
-      flex: 1 1 520px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      font-size: 16px;
-      outline: none;
-    }
+button {
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--accent);
+  color: #08101f;
+  font-weight: 700;
+  cursor: pointer;
+}
 
-    button {
-      padding: 14px 18px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--accent);
-      color: #08101f;
-      font-weight: 700;
-      cursor: pointer;
-    }
+button.secondary {
+  background: var(--panel-2);
+  color: var(--text);
+}
 
-    button.secondary {
-      background: var(--panel-2);
-      color: var(--text);
-    }
+.meta {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
 
-    .meta {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 14px;
-    }
+.results {
+  margin-top: 24px;
+  display: grid;
+  gap: 14px;
+}
 
-    .results {
-      margin-top: 24px;
-      display: grid;
-      gap: 14px;
-    }
+.card {
+  background: rgba(21, 25, 34, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+}
 
-    .card {
-      background: rgba(21, 25, 34, 0.9);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-    }
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
 
-    .card h3 {
-      margin: 0 0 8px;
-      font-size: 20px;
-    }
+.url {
+  color: var(--accent);
+  font-size: 14px;
+  word-break: break-word;
+  margin-bottom: 10px;
+}
 
-    .url {
-      color: var(--accent);
-      font-size: 14px;
-      word-break: break-word;
-      margin-bottom: 10px;
-    }
+.url a {
+  color: inherit;
+  text-decoration: none;
+}
 
-    .url a {
-      color: inherit;
-      text-decoration: none;
-    }
+.url a:hover {
+  text-decoration: underline;
+}
 
-    .url a:hover {
-      text-decoration: underline;
-    }
+.snippet {
+  color: #d7ddf4;
+  line-height: 1.6;
+}
 
-    .snippet {
-      color: #d7ddf4;
-      line-height: 1.6;
-    }
+.snippet mark {
+  background: rgba(122, 162, 255, 0.25);
+  color: #ffffff;
+  padding: 0 2px;
+  border-radius: 4px;
+}
 
-    .snippet mark {
-      background: rgba(122, 162, 255, 0.25);
-      color: #ffffff;
-      padding: 0 2px;
-      border-radius: 4px;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <section class="hero">
       <h1>Charbles Search</h1>
-      <p>Search popular sites.</p>
-
-      <div class="search-row">
-        <input id="searchInput" type="text" placeholder="Search sites..." autocomplete="off" />
-        <button id="searchBtn">Search</button>
-        <button id="showAllBtn" class="secondary">Show All</button>
-      </div>
-
-      <div id="meta" class="meta">Ready.</div>
-    </section>
-
-    <section id="results" class="results"></section>
+      <p>Search popular sites.</p><div class="search-row">
+    <input id="searchInput" type="text" placeholder="Search sites..." autocomplete="off" />
+    <button id="searchBtn">Search</button>
+    <button id="showAllBtn" class="secondary">Show All</button>
   </div>
 
-  <script>
+  <div id="meta" class="meta">Ready.</div>
+</section>
+
+<section id="results" class="results"></section>
+
+  </div>  <script>
     const DOCUMENTS = [
       {
         title: "Google",
@@ -254,6 +251,48 @@
         url: "https://samsung.com/",
         content: "Samsung electronics site for phones, TVs, appliances, and devices.",
         tags: ["samsung", "android", "phones", "tech"]
+      },
+      {
+        title: "Twitch",
+        url: "https://twitch.tv/",
+        content: "Live streaming platform focused on gaming, creators, esports, and live chat.",
+        tags: ["twitch", "streaming", "gaming", "live"]
+      },
+      {
+        title: "Amazon",
+        url: "https://amazon.com/",
+        content: "Online shopping platform for products, Prime services, streaming, and more.",
+        tags: ["amazon", "shopping", "ecommerce", "prime"]
+      },
+      {
+        title: "eBay",
+        url: "https://ebay.com/",
+        content: "Marketplace for auctions and buying or selling new and used items.",
+        tags: ["ebay", "shopping", "auction", "marketplace"]
+      },
+      {
+        title: "Yahoo",
+        url: "https://yahoo.com/",
+        content: "Web portal for news, email, finance, sports, and search.",
+        tags: ["yahoo", "news", "email", "portal"]
+      },
+      {
+        title: "WhatsApp",
+        url: "https://whatsapp.com/",
+        content: "Messaging app for texts, calls, group chats, and media sharing.",
+        tags: ["whatsapp", "chat", "messaging", "social"]
+      },
+      {
+        title: "Discord",
+        url: "https://discord.com/",
+        content: "Chat platform for communities, gaming, voice channels, and servers.",
+        tags: ["discord", "chat", "gaming", "community"]
+      },
+      {
+        title: "Wikipedia",
+        url: "https://wikipedia.org/",
+        content: "Free online encyclopedia with articles on nearly every topic.",
+        tags: ["wikipedia", "knowledge", "encyclopedia", "education"]
       }
     ];
 
@@ -390,6 +429,5 @@
 
     renderResults(DOCUMENTS);
     metaEl.textContent = `Showing all ${DOCUMENTS.length} site(s).`;
-  </script>
-</body>
+  </script></body>
 </html>
