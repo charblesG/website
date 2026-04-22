@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mini Search Engine</title>
+  <title>Charbles Search</title>
   <style>
     :root {
       --bg: #0b0d10;
@@ -111,6 +111,15 @@
       margin-bottom: 10px;
     }
 
+    .url a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .url a:hover {
+      text-decoration: underline;
+    }
+
     .snippet {
       color: #d7ddf4;
       line-height: 1.6;
@@ -122,84 +131,69 @@
       padding: 0 2px;
       border-radius: 4px;
     }
-
-    .footer-box {
-      margin-top: 24px;
-      padding: 18px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(21, 25, 34, 0.7);
-    }
-
-    code {
-      background: #121722;
-      border: 1px solid var(--border);
-      padding: 2px 6px;
-      border-radius: 6px;
-      color: #dfe6ff;
-    }
-
-    .hidden { display: none; }
   </style>
 </head>
 <body>
   <div class="container">
     <section class="hero">
-      <h1>The search engine for popular sites</h1>
+      <h1>Charbles Search</h1>
+      <p>Search popular sites.</p>
+
       <div class="search-row">
-        <input id="searchInput" type="text" placeholder="Search your site..." autocomplete="off" />
+        <input id="searchInput" type="text" placeholder="Search sites..." autocomplete="off" />
         <button id="searchBtn">Search</button>
         <button id="showAllBtn" class="secondary">Show All</button>
       </div>
 
-      <div id="meta" class="meta">Ready. Type something useful.</div>
+      <div id="meta" class="meta">Ready.</div>
     </section>
 
     <section id="results" class="results"></section>
-
-    <section class="footer-box">
-      <strong>How to use this on GitHub Pages</strong>
-      <p>
-        1. Save this file as <code>index.html</code>.<br>
-        2. Edit the <code>DOCUMENTS</code> array and add your pages.<br>
-        3. Push it to a GitHub repo.<br>
-        4. In GitHub, enable <code>Settings → Pages</code> and deploy from the main branch.<br>
-        5. Your search site will work at <code>https://yourusername.github.io/reponame/</code>.
-      </p>
-    </section>
   </div>
 
   <script>
     const DOCUMENTS = [
       {
         title: "Google",
-        url: "https://Google.com/",
-        content: "I guess you don't like this site huh",
+        url: "https://google.com/",
+        content: "Man you don't like this site do you",
+        tags: ["search", "google", "web"]
       },
       {
-        title: "Youtube",
-        url: "https://Youtube.com/",
+        title: "YouTube",
+        url: "https://youtube.com/",
+        content: "Video platform for watching creators, music, gaming, and livestreams.",
+        tags: ["video", "youtube", "streaming"]
       },
       {
-        title: "Gmail,
-        url: "https://Gmail.com/",
+        title: "Gmail",
+        url: "https://gmail.com/",
+        content: "Email service by Google for messages, inbox management, and communication.",
+        tags: ["email", "gmail", "google"]
       },
-       {
-        title: "Chat GPT",
+      {
+        title: "ChatGPT",
         url: "https://chatgpt.com/",
-      },
-       {
-        title: "Facebook.com,
-        url: "https://facebook.com/",
-      },
-       {
-        title: "twitter,
-        url: "https://twitter.com",
-        content: i'm not calling X elon,
+        content: "AI chat assistant for writing, coding, brainstorming, and questions.",
+        tags: ["ai", "chatgpt", "assistant"]
       },
       {
-        title: "Duck Duck Go",
+        title: "Facebook",
+        url: "https://facebook.com/",
+        content: "Social network for friends, groups, marketplace, and pages.",
+        tags: ["social", "facebook", "community"]
+      },
+      {
+        title: "Twitter",
+        url: "https://twitter.com/",
+        content: "I'm not calling it X elon!",
+        tags: ["social", "twitter", "news"]
+      },
+      {
+        title: "DuckDuckGo",
         url: "https://duckduckgo.com/",
+        content: "Privacy-focused search engine for web browsing and searching.",
+        tags: ["search", "privacy", "duckduckgo"]
       }
     ];
 
@@ -209,8 +203,8 @@
     const searchBtn = document.getElementById("searchBtn");
     const showAllBtn = document.getElementById("showAllBtn");
 
-    function escapeHtml(str) {
-      return str
+    function escapeHtml(str = "") {
+      return String(str)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
@@ -226,8 +220,8 @@
     }
 
     function scoreDocument(doc, terms) {
-      const title = doc.title.toLowerCase();
-      const content = doc.content.toLowerCase();
+      const title = (doc.title || "").toLowerCase();
+      const content = (doc.content || "").toLowerCase();
       const tags = (doc.tags || []).join(" ").toLowerCase();
       let score = 0;
 
@@ -254,6 +248,9 @@
     }
 
     function makeSnippet(text, terms) {
+      text = text || "";
+      if (!text.trim()) return "No description available.";
+
       const lower = text.toLowerCase();
       let index = 0;
 
@@ -282,7 +279,7 @@
         resultsEl.innerHTML = `
           <div class="card">
             <h3>No results</h3>
-            <div class="snippet">Nothing matched <mark>${escapeHtml(query)}</mark>. Humanity remains inconsistent.</div>
+            <div class="snippet">Nothing matched <mark>${escapeHtml(query)}</mark>.</div>
           </div>
         `;
         return;
@@ -305,7 +302,7 @@
       const query = input.value.trim();
 
       if (!query) {
-        metaEl.textContent = `Showing all ${DOCUMENTS.length} page(s).`;
+        metaEl.textContent = `Showing all ${DOCUMENTS.length} site(s).`;
         renderResults(DOCUMENTS);
         return;
       }
@@ -323,7 +320,7 @@
     searchBtn.addEventListener("click", search);
     showAllBtn.addEventListener("click", () => {
       input.value = "";
-      metaEl.textContent = `Showing all ${DOCUMENTS.length} page(s).`;
+      metaEl.textContent = `Showing all ${DOCUMENTS.length} site(s).`;
       renderResults(DOCUMENTS);
     });
 
@@ -331,15 +328,8 @@
       if (event.key === "Enter") search();
     });
 
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get("q");
-    if (q) {
-      input.value = q;
-      search();
-    } else {
-      renderResults(DOCUMENTS);
-      metaEl.textContent = `Showing all ${DOCUMENTS.length} page(s).`;
-    }
+    renderResults(DOCUMENTS);
+    metaEl.textContent = `Showing all ${DOCUMENTS.length} site(s).`;
   </script>
 </body>
 </html>
